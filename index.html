@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Spark | Find Your Future</title>
+    
+    <!-- Google Fonts for a modern, friendly look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- COLOR & FONT VARIABLES --- */
+        :root {
+            --primary-color: #6e48ff; /* Vibrant Purple */
+            --secondary-color: #0099ff; /* Bright Blue */
+            --accent-color: #ff85a2; /* Soft Pink */
+            --success-color: #00c49a; /* Teal Green */
+            --warning-color: #ff9f43; /* Orange for neutral feedback */
+            --bg-color: #f0f2f5; /* Light Gray Background */
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --border-color: #e9ecef;
+            
+            --font-primary: 'Poppins', sans-serif;
+            --font-display: 'Fredoka', sans-serif;
+        }
+
+        /* --- GENERAL STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem 0;
+        }
+        
+        /* --- MAIN APP CONTAINER --- */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            max-height: 900px;
+            background: var(--card-bg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- PAGE STRUCTURE & TRANSITIONS --- */
+        .page-container {
+            flex-grow: 1;
+            position: relative;
+            overflow-y: auto;
+        }
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Changed for scrollable pages */
+            padding: 2.5rem;
+            text-align: center;
+            width: 100%;
+            min-height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: fadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .page.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-centered {
+            justify-content: center;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            color: var(--primary-color);
+        }
+        h2 { font-size: 2rem; margin-bottom: 1rem; }
+        p { color: var(--light-text); margin-bottom: 2rem; line-height: 1.6; }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: var(--font-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(110, 72, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #eef2f6;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e1e6ec;
+            border-color: #d1d8e0;
+        }
+        
+        .btn-link {
+            background: none;
+            color: var(--secondary-color);
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: none;
+        }
+        .btn-link:hover { text-decoration: underline; }
+        
+        /* --- CARDS & LAYOUT --- */
+        .card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+            margin-bottom: 1.5rem;
+            width: 100%;
+            text-align: left;
+        }
+        
+        /* --- FORM ELEMENTS --- */
+        .form-group {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+
+        /* --- BOTTOM NAVIGATION --- */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            border-top: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--light-text);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .nav-item span {
+            font-size: 0.75rem;
+        }
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        /* --- SPECIFIC PAGE STYLES --- */
+        .counselor-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        .counselor-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .counselor-card .info h4 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        .counselor-card .info p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .profile-header h2 {
+            margin-bottom: 0.25rem;
+        }
+        
+        .profile-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .profile-info-item span:first-child {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .profile-info-item span:last-child {
+            color: var(--light-text);
+        }
+        
+        .career-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+        .career-btn {
+            padding: 1.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Quiz and Assessment Pages */
+        .question-box {
+            padding: 1rem;
+            width: 100%;
+        }
+        .likert-scale, .quiz-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+        .likert-scale label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+        .likert-scale input[type="radio"] {
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        .likert-scale input[type="radio"]:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        .results-content {
+            padding-top: 1rem;
+            width: 100%;
+            text-align: left;
+            overflow-y: auto;
+            height: 100%;
+        }
+        .personality-title {
+            color: var(--primary-color);
+            display: block;
+            font-size: 2.5rem;
+            margin-top: -1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .icon-success, .icon-neutral {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .icon-success { color: var(--success-color); }
+        .icon-neutral { color: var(--warning-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="page-container">
+            <!-- Page 1: Login / Sign Up -->
+            <div class="page page-centered active" id="loginPage">
+                <div class="logo">Career Spark</div>
+                <p>Find the path that ignites your passion and potential.</p>
+                <button class="btn btn-primary" onclick="showPage('signupPage')">Sign Up</button>
+                <button class="btn btn-secondary" onclick="showProfileSelection()">Login</button>
+            </div>
+            
+            <!-- Signup Page -->
+            <div class="page page-centered" id="signupPage">
+                <h2>Create Your Profile</h2>
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter a unique name">
+                </div>
+                <button class="btn btn-primary" onclick="handleSignup()">Create Profile</button>
+                <button class="btn btn-link" onclick="showPage('loginPage')">Back to Login</button>
+            </div>
+            
+            <!-- Profile Selection Page -->
+            <div class="page" id="profileSelectionPage">
+                <h2>Select Profile</h2>
+                <div id="profileList" style="width: 100%;">
+                    <!-- Profile buttons will be generated here -->
+                </div>
+                <button class="btn btn-link" onclick="showPage('loginPage')">Back</button>
+            </div>
+
+            <!-- Onboarding Flow -->
+            <div class="page" id="onboardingPage1">
+                <h2>Welcome, <span class="currentUserName"></span>! Let's get started.</h2>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="e.g., Mumbai">
+                </div>
+                <div class="form-group">
+                    <label for="school">School / College Name</label>
+                    <input type="text" id="school" placeholder="e.g., Delhi Public School">
+                </div>
+                <button class="btn btn-primary" onclick="saveOnboardingStep1()">Next</button>
+            </div>
+
+            <div class="page" id="onboardingPage2">
+                <h2>Tell us about yourself</h2>
+                <div class="form-group">
+                    <label for="class">Class / Year</label>
+                    <input type="text" id="class" placeholder="e.g., Class 12th or FYBSc">
+                </div>
+                 <div class="form-group">
+                    <label for="targetCareer">What career are you targeting?</label>
+                    <input type="text" id="targetCareer" placeholder="e.g., Software Engineering">
+                </div>
+                <button class="btn btn-primary" onclick="saveOnboardingStep2()">Finish Setup</button>
+            </div>
+
+            <!-- Main Dashboard -->
+            <div class="page" id="dashboardPage">
+                <h2 style="align-self: flex-start;">Home</h2>
+                <div class="card" onclick="showPage('assessmentIntroPage')">
+                    <h3>Take a Self-Assessment</h3>
+                    <p>Get personalized career suggestions with our quick test.</p>
+                </div>
+                <div class="card" onclick="showPage('careerChoicePage')">
+                    <h3>Explore Specific Careers</h3>
+                    <p>Take a short quiz to see if a career is the right fit for you.</p>
+                </div>
+                 <div class="card" onclick="showPage('counselorListPage')">
+                    <h3>Find a Counselor</h3>
+                    <p>Connect with experts for 1-on-1 guidance.</p>
+                </div>
+            </div>
+            
+            <!-- Counselor List Page -->
+            <div class="page" id="counselorListPage">
+                <h2 style="align-self: flex-start;">Search Counselors</h2>
+                 <div class="card counselor-card" onclick="showCounselorProfile(1)">
+                    <img src="https://placehold.co/100x100/6e48ff/ffffff?text=AS" alt="Counselor">
+                    <div class="info">
+                        <h4>Anjali Sharma</h4>
+                        <p>Tech Careers Expert</p>
+                    </div>
+                </div>
+                 <div class="card counselor-card" onclick="showCounselorProfile(2)">
+                    <img src="https://placehold.co/100x100/0099ff/ffffff?text=RV" alt="Counselor">
+                    <div class="info">
+                        <h4>Ravi Verma</h4>
+                        <p>Creative Fields Mentor</p>
+                    </div>
+                </div>
+                 <div class="card counselor-card" onclick="showCounselorProfile(3)">
+                    <img src="https://placehold.co/100x100/ff9f43/ffffff?text=PS" alt="Counselor">
+                    <div class="info">
+                        <h4>Priya Singh</h4>
+                        <p>Network & Security Pro</p>
+                    </div>
+                </div>
+                 <div class="card counselor-card" onclick="showCounselorProfile(4)">
+                    <img src="https://placehold.co/100x100/00c49a/ffffff?text=SK" alt="Counselor">
+                    <div class="info">
+                        <h4>Sameer Khan</h4>
+                        <p>Cybersecurity Strategist</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Counselor Profile Page -->
+            <div class="page" id="counselorProfilePage">
+                <div class="profile-header">
+                    <img id="counselorProfileImg" src="https://placehold.co/100x100/6e48ff/ffffff?text=AS" alt="Counselor">
+                    <h2 id="counselorProfileName">Counselor Name</h2>
+                    <p id="counselorProfileTitle">Expertise</p>
+                </div>
+                <div class="card">
+                    <h3>About Me</h3>
+                    <div id="counselorProfileAbout" class="ai-content">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="showPage('paymentPage')">Book Session</button>
+            </div>
+            
+            <!-- Profile Page -->
+            <div class="page" id="profilePage">
+                <div class="profile-header">
+                    <img src="https://placehold.co/100x100/6e48ff/ffffff?text=U" alt="User" id="profilePageAvatar">
+                    <h2 id="profilePageName">User Name</h2>
+                </div>
+                <div class="card">
+                    <h3>My Information</h3>
+                    <div class="profile-info-item">
+                        <span>City</span>
+                        <span id="profilePageCity"></span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span>School</span>
+                        <span id="profilePageSchool"></span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span>Class</span>
+                        <span id="profilePageClass"></span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span>Target Career</span>
+                        <span id="profilePageTarget"></span>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">Switch Profile</button>
+            </div>
+
+            <!-- Self Assessment Pages -->
+            <div class="page page-centered" id="assessmentIntroPage">
+                 <h2>Let's Get to Know You!</h2>
+                 <p>A short assessment will help us find your perfect career match.</p>
+                 <button class="btn btn-primary" onclick="startAssessment()">Start the Assessment</button>
+            </div>
+
+            <div class="page page-centered" id="assessmentQuestionPage">
+                <div class="question-box">
+                    <h2 id="questionText">Question goes here...</h2>
+                    <div class="likert-scale">
+                        <label>Disagree<input type="radio" name="likert" value="1"></label>
+                        <label><input type="radio" name="likert" value="2"></label>
+                        <label><input type="radio" name="likert" value="3"></label>
+                        <label><input type="radio" name="likert" value="4"></label>
+                        <label>Agree<input type="radio" name="likert" value="5"></label>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                     <button class="btn btn-secondary" onclick="prevQuestion()">Previous</button>
+                     <button class="btn btn-primary" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+            
+            <div class="page page-centered" id="testCompletePage">
+                <h2>Good Job!</h2>
+                <p>You have completed the test.</p>
+                <button class="btn btn-primary" onclick="calculateAssessmentResult()">Show My Result</button>
+            </div>
+        
+            <div class="page" id="resultsPage">
+                <div class="results-content">
+                    <h2>Your personality type is:</h2>
+                    <h2 id="personalityResultTitle" class="personality-title">The Innovator</h2>
+                    <p id="personalityResultDescription">Your profile suggests a strong aptitude for creative and analytical fields.</p>
+                    <div class="card">
+                        <h3>Suggested Career Paths</h3>
+                        <div id="personalityCareerSuggestions"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="showPage('dashboardPage')">Go Home</button>
+                </div>
+            </div>
+
+            <!-- Career Exploration Pages -->
+            <div class="page" id="careerChoicePage">
+                <h2>Pick Your Interested Career</h2>
+                <div class="career-grid">
+                    <button class="btn btn-secondary career-btn" onclick="startCareerQuiz('Cybersecurity')">Cybersecurity</button>
+                    <button class="btn btn-secondary career-btn" onclick="startCareerQuiz('IT')">IT</button>
+                    <button class="btn btn-secondary career-btn" onclick="startCareerQuiz('Developer')">Developer</button>
+                    <button class="btn btn-secondary career-btn" onclick="startCareerQuiz('Azure')">Azure</button>
+                    <button class="btn btn-secondary career-btn" onclick="startCareerQuiz('Data Science')">Data Science</button>
+                    <button class="btn btn-secondary career-btn" onclick="startCareerQuiz('Database Management')">Database Mgmt</button>
+                </div>
+            </div>
+            
+            <div class="page page-centered" id="careerQuizPage">
+                <h2 id="careerQuizTitle">Career Quiz</h2>
+                <div class="question-box">
+                    <p id="careerQuestionText" style="font-size: 1.2rem; color: var(--text-color);">Question...</p>
+                    <div class="quiz-options">
+                        <button class="btn btn-primary" style="flex:1;" onclick="nextCareerQuestion(true)">Yes</button>
+                        <button class="btn btn-secondary" style="flex:1;" onclick="nextCareerQuestion(false)">No</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page page-centered" id="quizResultPage">
+                <div id="quizResultIcon" class="icon-success">🏆</div>
+                <h2 id="quizResultTitle" class="confidence-title">Excellent Work!</h2>
+                <div class="card">
+                    <h3>Feedback</h3>
+                    <p id="quizResultFeedback">Your thoughtful response indicates a strong aptitude for this field.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showPage('careerChoicePage')">Try Another Career</button>
+            </div>
+
+        </div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="showPage('dashboardPage'); setActiveNav(this);">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="showPage('careerChoicePage'); setActiveNav(this);">
+                <i class="fas fa-compass"></i>
+                <span>Explore</span>
+            </div>
+            <div class="nav-item" onclick="showPage('counselorListPage'); setActiveNav(this);">
+                <i class="fas fa-users"></i>
+                <span>Counselors</span>
+            </div>
+            <div class="nav-item" onclick="loadAndShowProfile(); setActiveNav(this);">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </nav>
+    </div>
+
+
+    <script>
+        let currentPageId = 'loginPage';
+
+        // --- IMPORTANT: API KEY SETUP ---
+        const USER_API_KEY = "AIzaSyBEJ87CuKC6I_BBVg2wpQlKJW0729iZKDY";
+
+
+        // --- CORE NAVIGATION ---
+        function showPage(pageId) {
+            const currentPage = document.getElementById(currentPageId);
+            if (currentPage) currentPage.classList.remove('active');
+            
+            const nextPage = document.getElementById(pageId);
+            if (nextPage) {
+                nextPage.classList.add('active');
+                currentPageId = pageId;
+            }
+        }
+        
+        function setActiveNav(element) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // --- PROFILE MANAGEMENT ---
+        function getProfiles() {
+            return JSON.parse(localStorage.getItem('careerSparkProfiles')) || [];
+        }
+
+        function saveProfiles(profiles) {
+            localStorage.setItem('careerSparkProfiles', JSON.stringify(profiles));
+        }
+
+        function getCurrentUser() {
+            return localStorage.getItem('careerSparkCurrentUser');
+        }
+
+        function setCurrentUser(name) {
+            localStorage.setItem('careerSparkCurrentUser', name);
+        }
+
+        function logout() {
+            localStorage.removeItem('careerSparkCurrentUser');
+            showPage('loginPage');
+        }
+
+        function handleSignup() {
+            const nameInput = document.getElementById('signupName');
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert("Please enter a name.");
+                return;
+            }
+
+            let profiles = getProfiles();
+            if (profiles.find(p => p.name.toLowerCase() === name.toLowerCase())) {
+                alert("A profile with this name already exists. Please choose another name.");
+                return;
+            }
+
+            const newProfile = { name: name, city: '', school: '', class: '', target: '' };
+            profiles.push(newProfile);
+            saveProfiles(profiles);
+            setCurrentUser(name);
+
+            document.querySelectorAll('.currentUserName').forEach(el => el.innerText = name);
+            showPage('onboardingPage1');
+        }
+
+        function showProfileSelection() {
+            const profiles = getProfiles();
+            const profileListDiv = document.getElementById('profileList');
+            profileListDiv.innerHTML = '';
+
+            if (profiles.length === 0) {
+                profileListDiv.innerHTML = '<p>No profiles found. Please sign up.</p>';
+            } else {
+                profiles.forEach(profile => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn btn-secondary';
+                    btn.innerText = profile.name;
+                    btn.onclick = () => login(profile.name);
+                    profileListDiv.appendChild(btn);
+                });
+            }
+            showPage('profileSelectionPage');
+        }
+
+        function login(name) {
+            setCurrentUser(name);
+            showPage('dashboardPage');
+        }
+
+        function saveOnboardingStep1() {
+            const city = document.getElementById('city').value;
+            const school = document.getElementById('school').value;
+            
+            let profiles = getProfiles();
+            const currentUser = getCurrentUser();
+            const profileIndex = profiles.findIndex(p => p.name === currentUser);
+
+            if (profileIndex !== -1) {
+                profiles[profileIndex].city = city;
+                profiles[profileIndex].school = school;
+                saveProfiles(profiles);
+                showPage('onboardingPage2');
+            } else {
+                alert("Error: Could not find current profile.");
+            }
+        }
+
+        function saveOnboardingStep2() {
+            const classVal = document.getElementById('class').value;
+            const target = document.getElementById('targetCareer').value;
+
+            let profiles = getProfiles();
+            const currentUser = getCurrentUser();
+            const profileIndex = profiles.findIndex(p => p.name === currentUser);
+
+            if (profileIndex !== -1) {
+                profiles[profileIndex].class = classVal;
+                profiles[profileIndex].target = target;
+                saveProfiles(profiles);
+                showPage('dashboardPage');
+            } else {
+                alert("Error: Could not find current profile.");
+            }
+        }
+
+        function loadAndShowProfile() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                showPage('loginPage');
+                return;
+            }
+
+            const profiles = getProfiles();
+            const profile = profiles.find(p => p.name === currentUser);
+
+            if (profile) {
+                document.getElementById('profilePageAvatar').src = `https://placehold.co/100x100/6e48ff/ffffff?text=${profile.name.charAt(0).toUpperCase()}`;
+                document.getElementById('profilePageName').innerText = profile.name;
+                document.getElementById('profilePageCity').innerText = profile.city || 'Not set';
+                document.getElementById('profilePageSchool').innerText = profile.school || 'Not set';
+                document.getElementById('profilePageClass').innerText = profile.class || 'Not set';
+                document.getElementById('profilePageTarget').innerText = profile.target || 'Not set';
+                showPage('profilePage');
+            } else {
+                logout(); // Profile not found, log out
+            }
+        }
+
+
+        // --- GEMINI API CALL HELPER ---
+        async function callGemini(prompt, elementToUpdate) {
+            const apiKey = (USER_API_KEY && USER_API_KEY !== "PASTE_YOUR_GEMINI_API_KEY_HERE") ? USER_API_KEY : "";
+
+            if (!apiKey) {
+                elementToUpdate.innerText = "API Key is missing. Please add it to the code.";
+                return;
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            elementToUpdate.innerHTML = '<div class="loading-spinner"></div>';
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    elementToUpdate.innerText = text.trim();
+                } else {
+                    elementToUpdate.innerText = 'Sorry, I could not generate a response.';
+                }
+            } catch (error) {
+                console.error('Gemini API call failed:', error);
+                elementToUpdate.innerText = 'An error occurred. Please check the console.';
+            }
+        }
+
+        // --- COUNSELOR PROFILE LOGIC ---
+        const counselors = {
+            1: { name: "Anjali Sharma", title: "Tech Careers Expert", img: "https://placehold.co/100x100/6e48ff/ffffff?text=AS" },
+            2: { name: "Ravi Verma", title: "Creative Fields Mentor", img: "https://placehold.co/100x100/0099ff/ffffff?text=RV" },
+            3: { name: "Priya Singh", title: "Network & Security Pro", img: "https://placehold.co/100x100/ff9f43/ffffff?text=PS" },
+            4: { name: "Sameer Khan", title: "Cybersecurity Strategist", img: "https://placehold.co/100x100/00c49a/ffffff?text=SK" }
+        };
+
+        function showCounselorProfile(id) {
+            const counselor = counselors[id];
+            document.getElementById('counselorProfileName').innerText = counselor.name;
+            document.getElementById('counselorProfileTitle').innerText = counselor.title;
+            document.getElementById('counselorProfileImg').src = counselor.img;
+            document.getElementById('paymentCounselorName').innerText = counselor.name;
+
+            const prompt = `Create a brief, professional, and encouraging bio for a career counselor named ${counselor.name} who specializes in ${counselor.title}. Mention their passion for helping students find their path. Keep it to 3-4 sentences.`;
+            const aboutContainer = document.getElementById('counselorProfileAbout');
+            callGemini(prompt, aboutContainer);
+
+            showPage('counselorProfilePage');
+        }
+
+        // --- SELF ASSESSMENT LOGIC ---
+        const assessmentQuestions = [
+            { question: "I enjoy solving complex problems, even if it takes a long time.", type: 'Analytical' },
+            { question: "I'm more excited by creating something new than by improving an existing system.", type: 'Creative' },
+            { question: "I feel most successful when my work directly helps other people or a team.", type: 'People-Oriented' },
+            { question: "I prefer tasks that require logical, step-by-step thinking.", type: 'Analytical' },
+            { question: "I'm drawn to expressing ideas visually, through design or art.", type: 'Creative' },
+        ];
+        const personalityTypes = {
+            'Analytical': {
+                title: 'The Analyst',
+                description: 'You are a logical thinker who excels at solving complex problems.',
+                careers: ['Developer', 'Data Science', 'Cybersecurity']
+            },
+            'Creative': {
+                title: 'The Creator',
+                description: 'You are an imaginative innovator, driven by originality and design.',
+                careers: ['Developer', 'IT', 'UX/UI Design']
+            },
+            'People-Oriented': {
+                title: 'The Helper',
+                description: 'You are a collaborative individual who thrives in team environments.',
+                careers: ['IT', 'Project Management', 'Human Resources']
+            }
+        };
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        function startAssessment() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            renderQuestion();
+            showPage('assessmentQuestionPage');
+        }
+
+        function renderQuestion() {
+            if (currentQuestionIndex < assessmentQuestions.length) {
+                document.getElementById('questionText').innerText = assessmentQuestions[currentQuestionIndex].question;
+                const radios = document.getElementsByName('likert');
+                radios.forEach(radio => radio.checked = false);
+            }
+        }
+        
+        function nextQuestion() {
+             const selectedAnswer = document.querySelector('input[name="likert"]:checked');
+            if (!selectedAnswer) { alert("Please select an answer!"); return; }
+            userAnswers[currentQuestionIndex] = parseInt(selectedAnswer.value);
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= assessmentQuestions.length) {
+                showPage('testCompletePage');
+            } else {
+                renderQuestion();
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+        
+        function calculateAssessmentResult() {
+            const scores = { 'Analytical': 0, 'Creative': 0, 'People-Oriented': 0 };
+            userAnswers.forEach((answer, index) => {
+                const questionType = assessmentQuestions[index].type;
+                scores[questionType] += answer;
+            });
+
+            let dominantType = 'Analytical';
+            if (scores['Creative'] > scores[dominantType]) dominantType = 'Creative';
+            if (scores['People-Oriented'] > scores[dominantType]) dominantType = 'People-Oriented';
+
+            const result = personalityTypes[dominantType];
+            document.getElementById('personalityResultTitle').innerText = result.title;
+            document.getElementById('personalityResultDescription').innerText = result.description;
+
+            const suggestionsContainer = document.getElementById('personalityCareerSuggestions');
+            suggestionsContainer.innerHTML = '';
+            result.careers.forEach(career => {
+                const item = document.createElement('div');
+                item.className = 'career-item';
+                item.innerHTML = `<div class="info"><h4>${career}</h4></div>`;
+                suggestionsContainer.appendChild(item);
+            });
+
+            showPage('resultsPage');
+        }
+        
+        // --- CAREER EXPLORATION LOGIC ---
+        const careerQuizzes = {
+            'Cybersecurity': ["Q1: Do you enjoy solving puzzles?", "Q2: Are you detail-oriented?", "Q3: Do you like protecting things?", "Q4: Are you a logical thinker?", "Q5: Do you stay calm under pressure?"],
+            'IT': ["Q1: Do you enjoy helping people with tech?", "Q2: Are you a good problem-solver?", "Q3: Do you like setting up systems?", "Q4: Are you patient?", "Q5: Do you like learning new tech?"],
+            'Developer': ["Q1: Do you like building things?", "Q2: Do you enjoy logic and structure?", "Q3: Are you persistent with problems?", "Q4: Do you like to create?", "Q5: Do you enjoy learning new languages?"],
+            'Azure': ["Q1: Are you interested in the cloud?", "Q2: Do you like managing big systems?", "Q3: Do you enjoy automation?", "Q4: Are you interested in scalability?", "Q5: Do you like virtual infrastructure?"],
+            'Data Science': ["Q1: Do you like finding patterns?", "Q2: Are you curious about data?", "Q3: Do you enjoy statistics?", "Q4: Do you like making predictions?", "Q5: Are you a logical thinker?"],
+            'Database Management': ["Q1: Do you like organizing information?", "Q2: Is data accuracy important to you?", "Q3: Do you enjoy structuring data?", "Q4: Do you like ensuring data is secure?", "Q5: Are you detail-oriented?"]
+        };
+        let selectedCareer = '';
+        let careerQuestionIndex = 0;
+        let careerQuizScore = 0;
+
+        function startCareerQuiz(careerName) {
+            selectedCareer = careerName;
+            careerQuestionIndex = 0;
+            careerQuizScore = 0;
+            renderCareerQuestion();
+            showPage('careerQuizPage');
+        }
+
+        function renderCareerQuestion() {
+            if (careerQuestionIndex < careerQuizzes[selectedCareer].length) {
+                document.getElementById('careerQuizTitle').innerText = `${selectedCareer} Quiz`;
+                document.getElementById('careerQuestionText').innerText = careerQuizzes[selectedCareer][careerQuestionIndex];
+            }
+        }
+
+        function nextCareerQuestion(answer) {
+            if (answer) careerQuizScore++;
+            careerQuestionIndex++;
+
+            if (careerQuestionIndex >= careerQuizzes[selectedCareer].length) {
+                showCareerQuizResult();
+            } else {
+                renderCareerQuestion();
+            }
+        }
+        
+        function showCareerQuizResult() {
+            const resultIcon = document.getElementById('quizResultIcon');
+            const resultTitle = document.getElementById('quizResultTitle');
+            const resultFeedback = document.getElementById('quizResultFeedback');
+
+            if (careerQuizScore >= 3) {
+                resultIcon.className = 'icon-success';
+                resultIcon.innerText = '🏆';
+                resultTitle.innerText = "It's a Great Match!";
+                resultFeedback.innerText = `Your answers suggest that you have a strong aptitude for ${selectedCareer}. This is a promising path for you!`;
+            } else {
+                resultIcon.className = 'icon-neutral';
+                resultIcon.innerText = '🤔';
+                resultTitle.innerText = "Maybe Not the Best Fit";
+                resultFeedback.innerText = `Based on your answers, ${selectedCareer} might not be the strongest match. That's okay! Let's explore other options.`;
+            }
+            showPage('quizResultPage');
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                showPage('dashboardPage');
+                setActiveNav(document.querySelector('.nav-item')); // Set Home as active
+            } else {
+                showPage('loginPage');
+            }
+        });
+    </script>
+</body>
+</html>
